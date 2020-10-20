@@ -28,7 +28,7 @@
 
 #include "incrementable.h"
 
-struct parallel_progress : public incrementable {
+    struct parallel_progress : public incrementable {
 	parallel_progress() : p(NULL) {}
 	void init(unsigned long n) { p = new boost::progress_display(n); }
 	void operator++() {
