@@ -48,6 +48,7 @@
 #include "box.h"
 #include "flexinfo.h"
 #include "builtinscoring.h"
+#include "version.h"
 
 using namespace boost::iostreams;
 using boost::filesystem::path;
@@ -841,7 +842,7 @@ int main(int argc, char* argv[])
 {
 	using namespace boost::program_options;
 	const std::string version_string =
-			"Smina " __DATE__ ".  Based on AutoDock Vina 1.1.2.";
+			std::string("smina ") + GIT_TAG + " " + GIT_BRANCH + ":"+GIT_REV + "   Built " __DATE__ ".  Based on AutoDock Vina 1.1.2.";
 	const std::string error_message =
 			"\n\n\
 Please report this error at http://smina.sf.net\n"
@@ -851,10 +852,10 @@ Please report this error at http://smina.sf.net\n"
     * the type of computer system you are running it on,\n\
 	* all command line options,\n\
 	* configuration file (if used),\n\
-    * ligand file as PDBQT,\n\
-    * receptor file as PDBQT,\n\
-	* flexible side chains file as PDBQT (if used),\n\
-	* output file as PDBQT (if any),\n\
+    * ligand file,\n\
+    * receptor file,\n\
+	* flexible side chains file (if used),\n\
+	* output file  (if any),\n\
     * input (if possible),\n\
 	* random seed the program used (this is printed when the program starts).\n\
 \n\
@@ -919,9 +920,9 @@ Thank you!\n";
 		options_description inputs("Input");
 		inputs.add_options()
 		("receptor,r", value<std::string>(&rigid_name),
-				"rigid part of the receptor (PDBQT)")
+				"rigid part of the receptor")
 		("flex", value<std::string>(&flex_name),
-				"flexible side chains, if any (PDBQT)")
+				"flexible side chains, if any")
 		("ligand,l", value<std::vector<std::string> >(&ligand_names),
 				"ligand(s)")
 		("flexres", value<std::string>(&flex_res),
