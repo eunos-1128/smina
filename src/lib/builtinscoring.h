@@ -25,7 +25,7 @@ class builtin_scoring
 	//map from names to sets of terms
 	typedef boost::unordered_map<std::string, std::vector<singleterm> > funcmap;
 	//optional - map from names to different atom type data
-  typedef boost::unordered_map<std::string, const smina_atom_type::info* > datamap;
+	typedef boost::unordered_map<std::string, const smina_atom_type::info* > datamap;
 	funcmap functions;
 	datamap atomdata;
 

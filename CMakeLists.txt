@@ -10,8 +10,14 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake/Modules)
 file(GLOB sminasrc
     "src/lib/*.h"
     "src/lib/*.cpp"
+    "src/lib/CommandLine2/*.cpp"
 )
 list(APPEND sminasrc "${CMAKE_CURRENT_BINARY_DIR}/version.cpp")
+
+file(GLOB sminaserver
+	"src/server/*.h"
+	"src/server/*.cpp"
+)
 
 message(${CMAKE_CURRENT_BINARY_DIR})
 # Add a custom command that produces version.cpp, plus
@@ -31,7 +37,7 @@ add_library(libsmina
     ${sminasrc}
 )
 set_target_properties(libsmina PROPERTIES OUTPUT_NAME "smina")
-target_include_directories(libsmina PUBLIC src/lib/)
+target_include_directories(libsmina PUBLIC src/lib/ src/lib/CommandLine2)
 set(Boost_NO_BOOST_CMAKE ON)  #apparently required for newer boosts?
 find_package(Boost REQUIRED  COMPONENTS 
   iostreams 
@@ -60,6 +66,21 @@ target_link_libraries(libsmina ${OPENBABEL3_LIBRARIES})
 message("-- Found OpenBabel3 include files at ${OPENBABEL3_INCLUDE_DIR}")
 message("-- Found OpenBabel3 libraries at ${OPENBABEL3_LIBRARIES}")
 
+get_target_property(SMINA_INCLUDES libsmina INCLUDE_DIRECTORIES)
+
 add_executable(smina src/main/main.cpp)
 target_link_libraries(smina libsmina)
 target_link_libraries(smina Threads::Threads)
+
+add_executable(server ${sminaserver})
+target_link_libraries(server libsmina)
+target_link_libraries(server Threads::Threads)
+include_directories(server  ${SMINA_INCLUDES})
+
+add_executable(fromsmina src/fromsmina/fromsmina.cpp)
+target_link_libraries(fromsmina libsmina)
+include_directories(fromsmina${SMINA_INCLUDES})
+
+add_executable(tosmina src/tosmina/tosmina.cpp)
+target_link_libraries(tosmina libsmina)
+include_directories(tosmina${SMINA_INCLUDES})

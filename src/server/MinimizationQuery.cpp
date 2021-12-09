@@ -86,7 +86,7 @@ bool MinimizationQuery::finished()
 void MinimizationQuery::execute(bool block/*=false*/)
 {
 	assert(minimizationSpawner == NULL);
-	minimizationSpawner = new thread(thread_startMinimization, this);
+	minimizationSpawner = new boost::thread(thread_startMinimization, this);
 
 	if (block)
 		minimizationSpawner->join();
@@ -102,7 +102,7 @@ void MinimizationQuery::thread_startMinimization(MinimizationQuery *query)
 
 	for (unsigned t = 0; t < query->minparm.nthreads; t++)
 	{
-		minthreads.add_thread(new thread(thread_minimize, query));
+		minthreads.add_thread(new boost::thread(thread_minimize, query));
 	}
 	minthreads.join_all(); //block till all done
 
@@ -230,7 +230,7 @@ bool MinimizationQuery::thread_safe_read(vector<LigandData>& ligands)
 			return false; //give up
 		}
 	}
-	return io_strm;
+	return (bool)io_strm;
 }
 
 //read chunks of ligands, minimize them, and store the result
