@@ -19,6 +19,9 @@ file(GLOB sminaserver
 	"src/server/*.cpp"
 )
 
+set (CMAKE_CXX_STANDARD 11)
+set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
+
 message(${CMAKE_CURRENT_BINARY_DIR})
 # Add a custom command that produces version.cpp, plus
 # a dummy output that's not actually produced, in order
