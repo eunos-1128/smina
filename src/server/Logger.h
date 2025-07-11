@@ -32,7 +32,7 @@ public:
 			cerr << "Could not open log directory " << logname << "\n";
 			exit(-1);
 		}
-		setlinebuf(LOG);
+		setvbuf(LOG, NULL, _IOLBF, 0);
 	}
 
 	~Logger()
